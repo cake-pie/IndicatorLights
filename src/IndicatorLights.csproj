@@ -54,6 +54,7 @@
     <Compile Include="Console\PartCommand.cs" />
     <Compile Include="Console\PartsCommand.cs" />
     <Compile Include="Console\LightsEnabledCommand.cs" />
+	<Compile Include="CTIWrapper.cs" />
     <Compile Include="DefaultColor.cs" />
     <Compile Include="ExperimentalController.cs" />
     <Compile Include="Extensions.cs" />
