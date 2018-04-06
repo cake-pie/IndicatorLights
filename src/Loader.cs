@@ -26,6 +26,10 @@ namespace IndicatorLights
             }
             ConfigNode masterNode = configs[0].config;
             ProcessMasterNode(masterNode);
+
+            // Community Trait Icons integration
+            if (CTIWrapper.initCTIWrapper())
+                StartCoroutine(ModuleCrewIndicator.LoadCTIColors());
         }
 
         /// <summary>

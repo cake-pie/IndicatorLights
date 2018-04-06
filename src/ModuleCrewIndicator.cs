@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -266,6 +267,27 @@ namespace IndicatorLights
                     Logging.Warn(config.name + " config: No such class '" + entry.name + "' exists, skipping");
                     continue;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Community Trait Icons integration.
+        /// This gets called *after* LoadConfig, adding to / overwriting the IndicatorLights defaults.
+        /// </summary>
+        public static IEnumerator LoadCTIColors()
+        {
+            if (!CTIWrapper.CTI.Loaded)
+            {
+                Logging.Log("Waiting for Community Trait Icons to load...");
+                yield return new WaitForEndOfFrame();
+            }
+            if (!CTIWrapper.CTI.Loaded) yield break;
+            Logging.Log("Obtaining crew indicator colors from Community Trait Icons.");
+            foreach (string kerbalclass in Kerbals.Classes)
+            {
+                CTIWrapper.KerbalTraitSetting kts = CTIWrapper.CTI.getTrait(kerbalclass);  // try querying CTI for each known kerbal class
+                if (kerbalclass != kts.Name) continue;                                     // if CTI doesn't have a setting for this class, it would return settings for "Unknown" -- we should ignore such cases
+                _kerbalClassColorDefaults[kerbalclass] = Colors.ToString(kts.Color);       // upsert the color for this kerbal class
             }
         }
     }
